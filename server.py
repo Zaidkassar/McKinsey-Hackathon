@@ -12,7 +12,7 @@ number_values = {}
 def response():
 
     resp = twiml.Response()
-    from_number = request.values.get('From', None)
+    from_number = str(request.values.get('From', None))
     body = request.values.get('Body', None).lower()
 
     if from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinics":
@@ -26,6 +26,8 @@ def response():
         number_values[from_number]['index'] += 1
         if number_values[from_number]['index'] >= 3:
             number_values[from_number]['state'] = 'normal'
+    elif body == "hello" or body == "hi":
+        message = "Hello! Welcome to VacciNow. Type commands to see available commands"
     elif body == "on":
         if from_number not in numbers:
             numbers.append(from_number)
