@@ -29,7 +29,7 @@ def notifications():
                 from_="+2898132193",
                 body=message
             )
-    return Sent
+    return 'Sent'
 
 @app.route('/', methods=['GET', 'POST'])
 def response():
