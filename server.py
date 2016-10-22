@@ -7,12 +7,34 @@ app = Flask(__name__)
 numbers = []
 vaccines = ['Hand, Foot and Mouth Disease']
 number_values = {}
+ACCOUNT_SID = "ACa21cfc418e446b328b2a6e652e885cac"
+AUTH_TOKEN = "d67465f7552e7b382b5c6a9e30dc6ded"
+
+@app.route('/notify', methods=["GET", "POST"])
+def notifications():
+    client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
+    for number in numbers:
+        from_number = str(number)
+        number_reccomendations = 0
+        message = "Vaccines Recommended:\n\n"
+        for item in vaccines:
+            if from_number not in number_values or 'taken' not in number_values[from_number] or item.lower() not in number_values[from_number]['taken']:
+                message += item +'\n\n'
+                number_reccomendations += 1
+        message += 'Message "[insert disease name] OFF" for vaccines taken\n\nMessage "CLINICS" for nearby clinics'
+        if number_reccomendations != 0:
+            client.messages.create(
+                to=number,
+                from_="+2898132193",
+                body=message
+            )
 
 @app.route('/', methods=['GET', 'POST'])
 def response():
 
     resp = twiml.Response()
-    from_number = str(request.values.get('From', None))
+    insert_number = request.values.get('From', None)
+    from_number = str(insert_number)
     body = request.values.get('Body', None).lower()
 
     if from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinics":
@@ -31,8 +53,8 @@ def response():
     elif body == "hello" or body == "hi":
         message = 'Hello! Welcome to VacciNow. Message "COMMANDS" to see available commands'
     elif body == "on":
-        if from_number not in numbers:
-            numbers.append(from_number)
+        if insert_number not in numbers:
+            numbers.append(insert_number)
             message = 'You have been signed up for updates. Message "OFF" to turn updates off'
             if from_number in number_values:
                 number_values[from_number]['updates'] = "on"
@@ -42,10 +64,10 @@ def response():
         else:
             message = 'You are already signed up for updates. Message "OFF" to turn updates off'
     elif body == "off":
-        if from_number not in numbers:
+        if insert_number not in numbers:
             message = 'You are not regsitered for updates. Message "ON" to turn updates on'
         else:
-            numbers.remove(from_number)
+            numbers.remove(insert_number)
             message = 'You have been removed from the update list. Message "ON" to turn updates on'
             if from_number in number_values:
                 number_values[from_number]['updates'] = "off"
@@ -61,6 +83,8 @@ def response():
                 number_reccomendations += 1
         if number_reccomendations == 0:
             message = "You are up to date on all our vaccine reccomendations"
+        else:
+            message += 'Message "CLINICS" for nearby clinics'
     elif body == 'clinics' or body == 'clinic':
         message = "Please send us your location"
         if from_number in number_values:
