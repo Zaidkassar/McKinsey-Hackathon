@@ -5,14 +5,12 @@ app = Flask(__name__)
 
 numbers = []
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route('/', methods=['GET, POST'])
 def response():
 
-    twilio_account_sid = app.flask_app.config['ACa21cfc418e446b328b2a6e652e885cac']
-    twilio_auth_token = app.flask_app.config['d67465f7552e7b382b5c6a9e30dc6ded']
-    twilio_number = app.flask_app.config['+12898132193']
-
-    client = Client(twilio_account_sid, twilio_auth_token)
+    resp = twilio.twiml.Response()
+    resp.message("Hello, Connor")
+    return str(resp)
 
     resp = twilio.twiml.Response()
     from_number = request.values.get('From', None)
@@ -36,7 +34,7 @@ def response():
     else:
         message = 'Command not recognized, message "help" for commands'
 
-    client.messages.create(body=message, to=from_number, from_=twilio_number)
+    resp.message(message)
 
     return str(resp)
 
