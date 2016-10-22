@@ -80,7 +80,7 @@ def response():
         if  command == "on" or command == "off":
             body.pop()
             body = " ".join(body)
-            if body not in vaccines:
+            if body not in map(str.lower, vaccines):
                 message = '"' + body + '" is not recognized as a current reccomended disease'
             elif command == "on":
                 if from_number in number_values:
