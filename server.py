@@ -26,7 +26,7 @@ def notifications():
         if number_reccomendations != 0:
             client.messages.create(
                 to=number,
-                from_="+2898132193",
+                from_="+12898132193",
                 body=message
             )
     return 'Sent'
