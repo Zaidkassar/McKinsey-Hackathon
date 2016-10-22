@@ -2,11 +2,10 @@ from flask import Flask, request, redirect
 from twilio import twiml
 import os
 
-print "PORT = " + os.environ['PORT']
-
 app = Flask(__name__)
 
 numbers = []
+vaccines = ['Hand, Foot and Mouth Disease']
 
 @app.route('/', methods=['GET', 'POST'])
 def response():
@@ -27,7 +26,9 @@ def response():
             numbers.remove(from_number)
             message = 'You have been removed from the update list'
     elif body == 'vaccines':
-        message = ("Vaccines Available:\n Fill this")
+        message = "Vaccines Available:\n"
+        for item in vaccines:
+            message += item +'\n'
     elif body == "commands":
         message ='Commands:\n "updates on" to recieve updates on vaccines\n "vaccines" for available vaccines\n"updates off" to stop updates'
     else:
