@@ -74,7 +74,7 @@ def response():
         if from_number in number_values and 'updates' in number_values[from_number] and number_values[from_number]['updates'] == "on":
             message += '"off" to stop updates\n'
         else:
-            message += '"on" to recieve updates on vaccines\n'
+            message += '"on" to receive updates on vaccines\n'
         message += '"vaccines" for recommended vaccines\n"clinics" for nearby clinics\n"DISEASE NAME off" to mark a vaccine as taken'
     else:
         body = body.split()
