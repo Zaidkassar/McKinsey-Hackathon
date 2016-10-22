@@ -27,7 +27,7 @@ def response():
         if number_values[from_number]['index'] >= 3:
             number_values[from_number]['state'] = 'normal'
     elif body == "hello" or body == "hi":
-        message = "Hello! Welcome to VacciNow. Type commands to see available commands"
+        message = 'Hello! Welcome to VacciNow. Message "commands" to see available commands'
     elif body == "on":
         if from_number not in numbers:
             numbers.append(from_number)
@@ -54,7 +54,7 @@ def response():
         number_reccomendations = 0
         message = "Vaccines Recommended:\n"
         for item in vaccines:
-            if from_number in number_values and 'taken' in number_values[from_number] and item not in number_values[from_number]['taken']:
+            if from_number not in number_values or 'taken' not in number_values[from_number] or item not in number_values[from_number]['taken']:
                 message += item +'\n'
                 number_reccomendations += 1
         if number_reccomendations == 0:
