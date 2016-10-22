@@ -78,7 +78,7 @@ def response():
         body = body.split()
         command = body[len(body)-1]
         if  command == "on" or command == "off":
-            body = body[:len(body)-1]
+            body.pop(1)
             body = body.join()
             if body not in vaccines:
                 message = '"' + body + '" is not recognized as a current reccomended disease'
