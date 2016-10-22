@@ -24,13 +24,12 @@ def notifications():
                 number_reccomendations += 1
         message += 'Message "[insert disease name] OFF" for vaccines taken\n\nMessage "CLINICS" for nearby clinics'
         if number_reccomendations != 0:
-            return client.messages.create(
+            client.messages.create(
                 to=number,
                 from_="+2898132193",
                 body=message
             )
-        else:
-            return
+    return Sent
 
 @app.route('/', methods=['GET', 'POST'])
 def response():
