@@ -12,10 +12,6 @@ numbers = []
 def response():
 
     resp = twiml.Response()
-    resp.message("Hello, Connor")
-    return str(resp)
-
-    resp = twilio.twiml.Response()
     from_number = request.values.get('From', None)
     body = request.values.get('Body', None).lower()
     if body == "updates":
