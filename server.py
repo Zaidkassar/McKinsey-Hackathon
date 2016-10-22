@@ -65,6 +65,7 @@ def response():
         message = "Please send us your location"
         if from_number in number_values:
             number_values[from_number]['state'] = "clinics"
+            number_values[from_number]['index'] = 0
         else:
             number_values[from_number] = {}
             number_values[from_number]['state'] = "clinics"
