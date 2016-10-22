@@ -32,7 +32,7 @@ def notifications():
     return 'Sent'
 
 @app.route('/thanks', methods=["GET", "POST"])
-def notifications():
+def thanks():
     client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
     for number in numbers:
         from_number = str(number)
