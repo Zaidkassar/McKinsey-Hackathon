@@ -18,35 +18,35 @@ def response():
     if from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinics":
         #GOOGLE API body
         number_values[from_number]['clinics'] = ["RESULT1", "RESULT2", "RESULT3"]
-        message = number_values[from_number]['clinics'][number_values[from_number]['index']] + '. Message "next" for another nearby clinic'
+        message = number_values[from_number]['clinics'][number_values[from_number]['index']] + '. Message "NEXT" for another nearby clinic'
         number_values[from_number]['index'] += 1
         number_values[from_number]['state'] = "clinic result"
     elif from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinic result" and body == "next":
         message = number_values[from_number]['clinics'][number_values[from_number]['index']]
         number_values[from_number]['index'] += 1
         if number_values[from_number]['index'] != 2:
-            message += '. Message "next" for another nearby clinic'
+            message += '. Message "NEXT" for another nearby clinic'
         if number_values[from_number]['index'] >= 3:
             number_values[from_number]['state'] = 'normal'
     elif body == "hello" or body == "hi":
-        message = 'Hello! Welcome to VacciNow. Message "commands" to see available commands'
+        message = 'Hello! Welcome to VacciNow. Message "COMMANDS" to see available commands'
     elif body == "on":
         if from_number not in numbers:
             numbers.append(from_number)
-            message = 'You have been signed up for updates. Message "off" to turn updates off'
+            message = 'You have been signed up for updates. Message "OFF" to turn updates off'
             if from_number in number_values:
                 number_values[from_number]['updates'] = "on"
             else:
                 number_values[from_number] = {}
                 number_values[from_number]['updates'] = "on"
         else:
-            message = 'You are already signed up for updates. Message "off" to turn updates off'
+            message = 'You are already signed up for updates. Message "OFF" to turn updates off'
     elif body == "off":
         if from_number not in numbers:
-            message = 'You are not regsitered for updates. Message "on" to turn updates on'
+            message = 'You are not regsitered for updates. Message "ON" to turn updates on'
         else:
             numbers.remove(from_number)
-            message = 'You have been removed from the update list. Message "on" to turn updates on'
+            message = 'You have been removed from the update list. Message "ON" to turn updates on'
             if from_number in number_values:
                 number_values[from_number]['updates'] = "off"
             else:
@@ -54,10 +54,10 @@ def response():
                 number_values[from_number]['updates'] = "off"
     elif body == 'outbreak':
         number_reccomendations = 0
-        message = "Vaccines Recommended:\n"
+        message = "Vaccines Recommended:\n\n"
         for item in vaccines:
             if from_number not in number_values or 'taken' not in number_values[from_number] or item.lower() not in number_values[from_number]['taken']:
-                message += item +'\n'
+                message += item +'\n\n'
                 number_reccomendations += 1
         if number_reccomendations == 0:
             message = "You are up to date on all our vaccine reccomendations"
@@ -106,7 +106,7 @@ def response():
                 else:
                     message = body + " was not one of your current vaccines taken"
         else:
-            message = 'Command not recognized, message "commands" for commands'
+            message = 'Command not recognized, message "COMMANDS" for commands'
 
     resp.message(message)
 
