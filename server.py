@@ -24,9 +24,9 @@ def response():
     elif from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinic result" and body == "next":
         message = number_values[from_number]['clinics'][number_values[from_number]['index']]
         number_values[from_number]['index'] += 1
-        if number_values[from_number]['index'] != 2:
+        if number_values[from_number]['index'] < 3:
             message += '. Message "NEXT" for another nearby clinic'
-        if number_values[from_number]['index'] >= 3:
+        else:
             number_values[from_number]['state'] = 'normal'
     elif body == "hello" or body == "hi":
         message = 'Hello! Welcome to VacciNow. Message "COMMANDS" to see available commands'
@@ -52,7 +52,7 @@ def response():
             else:
                 number_values[from_number] = {}
                 number_values[from_number]['updates'] = "off"
-    elif body == 'outbreak':
+    elif body == 'outbreak' or body == 'outbreaks':
         number_reccomendations = 0
         message = "Vaccines Recommended:\n\n"
         for item in vaccines:
@@ -61,7 +61,7 @@ def response():
                 number_reccomendations += 1
         if number_reccomendations == 0:
             message = "You are up to date on all our vaccine reccomendations"
-    elif body == 'clinics':
+    elif body == 'clinics' or body == 'clinic':
         message = "Please send us your location"
         if from_number in number_values:
             number_values[from_number]['state'] = "clinics"
