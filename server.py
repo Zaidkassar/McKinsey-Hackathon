@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect
 from twilio import twiml
-
+import os
+print os.environ['PORT']
 app = Flask(__name__)
 
 numbers = []
