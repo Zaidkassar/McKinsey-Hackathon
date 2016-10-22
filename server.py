@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect
 from twilio import twiml
 import os
-print os.environ['PORT']
+
 app = Flask(__name__)
 
 numbers = []
@@ -40,4 +40,4 @@ def response():
     return str(resp)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=os.environ['PORT'])
