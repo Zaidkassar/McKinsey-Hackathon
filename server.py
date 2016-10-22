@@ -18,12 +18,14 @@ def response():
     if from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinics":
         #GOOGLE API body
         number_values[from_number]['clinics'] = ["RESULT1", "RESULT2", "RESULT3"]
-        message = number_values[from_number]['clinics'][number_values[from_number]['index']]
+        message = number_values[from_number]['clinics'][number_values[from_number]['index']] + '. Message "next" for another nearby clinic'
         number_values[from_number]['index'] += 1
         number_values[from_number]['state'] = "clinic result"
     elif from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinic result" and body == "next":
         message = number_values[from_number]['clinics'][number_values[from_number]['index']]
         number_values[from_number]['index'] += 1
+        if number_values[from_number]['index'] != 2
+            message += '. Message "next" for another nearby clinic'
         if number_values[from_number]['index'] >= 3:
             number_values[from_number]['state'] = 'normal'
     elif body == "hello" or body == "hi":
@@ -54,7 +56,7 @@ def response():
         number_reccomendations = 0
         message = "Vaccines Recommended:\n"
         for item in vaccines:
-            if from_number not in number_values or 'taken' not in number_values[from_number] or item not in number_values[from_number]['taken']:
+            if from_number not in number_values or 'taken' not in number_values[from_number] or item.lower() not in number_values[from_number]['taken']:
                 message += item +'\n'
                 number_reccomendations += 1
         if number_reccomendations == 0:
@@ -82,7 +84,7 @@ def response():
             body = " ".join(body)
             if body not in map(str.lower, vaccines):
                 message = '"' + body + '" is not recognized as a current reccomended disease'
-            elif command == "on":
+            elif command == "off":
                 if from_number in number_values:
                     if 'taken' in number_values[from_number]:
                         if body not in number_values[from_number]['taken']:
@@ -97,7 +99,7 @@ def response():
                     number_values[from_number] = {}
                     number_values[from_number]['taken'] = [body]
                     message = body + " has been added to your current vaccines taken"
-            elif command == "off":
+            elif command == "on":
                 if from_number in number_values and 'taken' in number_values[from_number] and body in number_values[from_number]['taken']:
                     number_values[from_number]['taken'].remove(body)
                     message = body + " has been removed from your current vaccines taken"
