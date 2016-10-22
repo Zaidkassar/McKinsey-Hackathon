@@ -5,10 +5,10 @@ app = Flask(__name__)
 
 numbers = []
 
-@app.route('/', methods=['GET, POST'])
+@app.route('/', methods=['GET', 'POST'])
 def response():
 
-    resp = twilio.twiml.Response()
+    resp = twiml.Response()
     resp.message("Hello, Connor")
     return str(resp)
 
