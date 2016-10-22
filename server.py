@@ -7,27 +7,36 @@ numbers = []
 
 @app.route("/", methods=['GET', 'POST'])
 def response():
+
+    twilio_account_sid = app.flask_app.config['ACa21cfc418e446b328b2a6e652e885cac']
+    twilio_auth_token = app.flask_app.config['d67465f7552e7b382b5c6a9e30dc6ded']
+    twilio_number = app.flask_app.config['+12898132193']
+
+    client = Client(twilio_account_sid, twilio_auth_token)
+
     resp = twilio.twiml.Response()
     from_number = request.values.get('From', None)
     body = request.values.get('Body', None).lower()
     if body == "updates":
         if from_number not in numbers:
             numbers.append(from_number)
-            resp.message('You have been signed up for updates')
+            message = 'You have been signed up for updates'
         else:
-            resp.message('You are already signed up for updates')
+            message = 'You are already signed up for updates'
     elif body == "cancel":
         if from_number not in numbers:
-            resp.message('You are not regsitered for updates')
+            message = 'You are not regsitered for updates'
         else:
             numbers.remove(from_number)
-            resp.message('You have been removed from the update list')
+            message = 'You have been removed from the update list'
     elif body == 'vaccines':
-        resp.message = ("Vaccines Available:\n Fill this")
+        message = ("Vaccines Available:\n Fill this")
     elif body == "help":
-        resp.message('Commands:\n "updates" to recieve updates on vaccines\n "vaccines" for available vaccines\n"cancel" to stop updates')
+        message ='Commands:\n "updates" to recieve updates on vaccines\n "vaccines" for available vaccines\n"cancel" to stop updates'
     else:
-        resp.message('Command not recognized, message "help" for commands')
+        message = 'Command not recognized, message "help" for commands'
+
+    client.messages.create(body=message, to=from_number, from_=twilio_number)
 
     return str(resp)
 
