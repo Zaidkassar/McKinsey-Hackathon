@@ -52,7 +52,7 @@ def response():
             else:
                 number_values[from_number] = {}
                 number_values[from_number]['updates'] = "off"
-    elif body == 'vaccines' or body == 'vaccine':
+    elif body == 'outbreak':
         number_reccomendations = 0
         message = "Vaccines Recommended:\n"
         for item in vaccines:
@@ -70,12 +70,12 @@ def response():
             number_values[from_number]['state'] = "clinics"
             number_values[from_number]['index'] = 0
     elif body == "commands" or body == 'command':
-        message ='Commands:\n'
+        message ='Text Commands:\n\n"OUTBREAK" for recommended vaccines\n\n"CLINICS" for nearby clinics\n\n'
         if from_number in number_values and 'updates' in number_values[from_number] and number_values[from_number]['updates'] == "on":
-            message += '"off" to stop updates\n'
+            message += '"OFF" to stop updates on vaccines\n\n'
         else:
-            message += '"on" to receive updates on vaccines\n'
-        message += '"vaccines" for recommended vaccines\n"clinics" for nearby clinics\n"DISEASE NAME off" to mark a vaccine as taken'
+            message += '"ON" to receive updates on vaccines\n\n'
+            message += '"[insert disease name] ON" or "[insert disease name] OFF" to mark a vaccine as taken'
     else:
         body = body.split()
         command = body[len(body)-1]
