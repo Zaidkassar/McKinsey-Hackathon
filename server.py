@@ -28,10 +28,10 @@ def response():
             message = 'You have been removed from the update list'
     elif body == 'vaccines':
         message = ("Vaccines Available:\n Fill this")
-    elif body == "help":
+    elif body == "commands":
         message ='Commands:\n "updates" to recieve updates on vaccines\n "vaccines" for available vaccines\n"cancel" to stop updates'
     else:
-        message = 'Command not recognized, message "help" for commands'
+        message = 'Command not recognized, message "commands" for commands'
 
     resp.message(message)
 
