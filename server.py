@@ -31,6 +31,18 @@ def notifications():
             )
     return 'Sent'
 
+@app.route('/thanks', methods=["GET", "POST"])
+def notifications():
+    client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
+    for number in numbers:
+        from_number = str(number)
+        client.messages.create(
+            to=number,
+            from_="+12898132193",
+            body="Thank you for listening to our presentation"
+        )
+    return 'Sent'
+
 @app.route('/', methods=['GET', 'POST'])
 def response():
 
