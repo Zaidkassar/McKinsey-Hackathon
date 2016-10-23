@@ -51,14 +51,14 @@ def notifications():
     client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
     for number in numbers:
         from_number = str(number)
-        number_reccomendations = 0
+        number_recommendations = 0
         message = "Vaccines Recommended:\n\n"
         for item in vaccines:
             if from_number not in number_values or 'taken' not in number_values[from_number] or item.lower() not in number_values[from_number]['taken']:
                 message += item +'\n\n'
-                number_reccomendations += 1
+                number_recommendations += 1
         message += 'Message "[insert disease name] OFF" for vaccines taken\n\nMessage "CLINICS" for nearby clinics'
-        if number_reccomendations != 0:
+        if number_recommendations != 0:
             client.messages.create(
                 to=number,
                 from_="+12898132193",
@@ -128,14 +128,14 @@ def response():
                 number_values[from_number] = {}
                 number_values[from_number]['updates'] = "off"
     elif body.strip() == 'outbreak' or body.strip() == 'outbreaks':
-        number_reccomendations = 0
+        number_recommendations = 0
         message = "Vaccines Recommended:\n\n"
         for item in vaccines:
             if from_number not in number_values or 'taken' not in number_values[from_number] or item.lower() not in number_values[from_number]['taken']:
                 message += item +'\n\n'
-                number_reccomendations += 1
-        if number_reccomendations == 0:
-            message = "You are up to date on all our vaccine reccomendations"
+                number_recommendations += 1
+        if number_recommendations == 0:
+            message = "You are up to date on all our vaccine recommendations"
         else:
             message += 'Message "CLINICS" for nearby clinics'
     elif body.strip() == 'clinics' or body.strip() == 'clinic':
@@ -161,7 +161,7 @@ def response():
             body.pop()
             body = " ".join(body)
             if body not in map(str.lower, vaccines):
-                message = '"' + body + '" is not recognized as a current reccomended disease'
+                message = '"' + body + '" is not recognized as a current recommended disease'
             elif command == "off":
                 if from_number in number_values:
                     if 'taken' in number_values[from_number]:
