@@ -17,11 +17,11 @@ def getDistanceLatLon(lat1, lon1, lat2, lon2):
 
 def getClinics(user_address):
     geocode_result = gmaps.geocode(user_address)
-    if geocode_result[0]:
+    if not geocode_result:
         return []
     df = pd.read_csv("clinic_geodata.csv")
-    latitude = geocode_result[0]['geometry']['bounds']['northeast']['lat']
-    longitude = geocode_result[0]['geometry']['bounds']['northeast']['lng']
+    latitude = geocode_result[0]['geometry']['location']['lat']
+    longitude = geocode_result[0]['geometry']['location']['lng']
 
     df['dist'] = df.apply(lambda x:getDistanceLatLon(x['LON'],x['LAT'],latitude, longitude),axis=1)
     df = df.sort(['dist'],ascending=[1])
