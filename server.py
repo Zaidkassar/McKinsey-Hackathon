@@ -167,22 +167,22 @@ def response():
                     if 'taken' in number_values[from_number]:
                         if body not in number_values[from_number]['taken']:
                             number_values[from_number]['taken'].append(body)
-                            message = body + " has been added to your current vaccines taken"
+                            message = '"' + body + '" has been added to your current vaccines taken'
                         else:
-                            message = body + " was previously added to your current vaccines taken"
+                            message = '"' + body + '" was previously added to your current vaccines taken'
                     else:
                         number_values[from_number]['taken'] = [body]
                         message = body + " has been added to your current vaccines taken"
                 else:
                     number_values[from_number] = {}
                     number_values[from_number]['taken'] = [body]
-                    message = body + " has been added to your current vaccines taken"
+                    message = '"' + body + '" has been added to your current vaccines taken'
             elif command == "on":
                 if from_number in number_values and 'taken' in number_values[from_number] and body in number_values[from_number]['taken']:
                     number_values[from_number]['taken'].remove(body)
-                    message = body + " has been removed from your current vaccines taken"
+                    message = '"' + body + '" has been removed from your current vaccines taken'
                 else:
-                    message = body + " was not one of your current vaccines taken"
+                    message = '"' + body + '" was not one of your current vaccines taken'
         else:
             message = 'Command not recognized, message "COMMANDS" for commands'
 
