@@ -2,6 +2,33 @@ from flask import Flask, request, redirect
 from twilio import twiml
 from twilio.rest import TwilioRestClient
 import os
+import pandas as pd
+import math
+import googlemaps
+
+def getDistanceLatLon(lat1, lon1, lat2, lon2):
+    R = 6371000
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat1))*math.cos(math.radians(lat2))*math.sin(dlon/2)*math.sin(dlon/2)
+    c = 2 * math.atan2(math.sqrt(a),math.sqrt(1-a))
+    dist = R*c
+    return dist
+
+def getClinics(user_address):
+    geocode_result = gmaps.geocode(user_address)
+    if geocode_result == []:
+        return []
+    df = pd.read_csv("clinic_geodata.csv")
+    latitude = geocode_result[0]['geometry']['bounds']['northeast']['lat']
+    longitude = geocode_result[0]['geometry']['bounds']['northeast']['lng']
+
+    df['dist'] = df.apply(lambda x:getDistanceLatLon(x['LON'],x['LAT'],latitude, longitude),axis=1)
+    df = df.sort(['dist'],ascending=[1])
+    clinics = []
+    for i in range(3):
+        message[i] = str(df.at[i, 'ID']) + " " + str(df.at[i, 'ADDRESS'])
+    return clinics
 
 app = Flask(__name__)
 
@@ -10,6 +37,7 @@ vaccines = ['Hand, Foot and Mouth Disease']
 number_values = {}
 ACCOUNT_SID = "ACa21cfc418e446b328b2a6e652e885cac"
 AUTH_TOKEN = "d67465f7552e7b382b5c6a9e30dc6ded"
+gmaps = googlemaps.Client(key='AIzaSyD2GX2U7Hwqe9Ar_8BuBzyU7V9u4emqxcw')
 
 @app.route('/notify', methods=["GET", "POST"])
 def notifications():
@@ -52,11 +80,14 @@ def response():
     body = request.values.get('Body', None).lower()
 
     if from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinics":
-        #GOOGLE API body
-        number_values[from_number]['clinics'] = ["RESULT1", "RESULT2", "RESULT3"]
-        message = number_values[from_number]['clinics'][number_values[from_number]['index']] + '. Message "NEXT" for another nearby clinic'
-        number_values[from_number]['index'] += 1
-        number_values[from_number]['state'] = "clinic result"
+        number_values[from_number]['clinics'] = getClinics(body)
+        if number_values[from_number]['clinics'] == []:
+            message = 'Address, "' + body + '" not found'
+            number_values[from_number]['state'] = "normal"
+        else:
+            message = number_values[from_number]['clinics'][number_values[from_number]['index']] + '. Message "NEXT" for another nearby clinic'
+            number_values[from_number]['index'] += 1
+            number_values[from_number]['state'] = "clinic result"
     elif from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinic result" and body == "next":
         message = number_values[from_number]['clinics'][number_values[from_number]['index']]
         number_values[from_number]['index'] += 1
