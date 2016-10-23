@@ -34,7 +34,7 @@ def getClinics(user_address):
     df.drop(['LAT','LON','dist'],axis=1,inplace=True)
     clinics = []
     for i in range(3):
-        clinics.append(str(df.iloc[i, 0]) + "\n\nLocation:" + str(df.iloc[i, 1]) + "\n\nPhone number: " + str(df.iloc[i, 2]))
+        clinics.append(str(df.iloc[i, 0]) + "\n\nLocation: " + str(df.iloc[i, 1]) + "\n\nPhone number: " + str(df.iloc[i, 2]))
     return clinics
 
 app = Flask(__name__)
@@ -93,14 +93,14 @@ def response():
             message = 'Address, "' + body + '" not found'
             number_values[from_number]['state'] = "normal"
         else:
-            message = number_values[from_number]['clinics'][number_values[from_number]['index']] + '. Message "NEXT" for another nearby clinic'
+            message = number_values[from_number]['clinics'][number_values[from_number]['index']] + '\n\nMessage "NEXT" for another nearby clinic'
             number_values[from_number]['index'] += 1
             number_values[from_number]['state'] = "clinic result"
     elif from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinic result" and body == "next":
         message = number_values[from_number]['clinics'][number_values[from_number]['index']]
         number_values[from_number]['index'] += 1
         if number_values[from_number]['index'] < 3:
-            message += '. Message "NEXT" for another nearby clinic'
+            message += '\n\nMessage "NEXT" for another nearby clinic'
         else:
             number_values[from_number]['state'] = 'normal'
     elif body == "hello" or body == "hi":
