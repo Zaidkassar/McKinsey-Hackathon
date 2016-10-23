@@ -37,7 +37,7 @@ vaccines = ['Hand, Foot and Mouth Disease']
 number_values = {}
 ACCOUNT_SID = "ACa21cfc418e446b328b2a6e652e885cac"
 AUTH_TOKEN = "d67465f7552e7b382b5c6a9e30dc6ded"
-gmaps = googlemaps.Client(key='AIzaSyCI3w4zB5uo7LCCHlTIMBDzVPprUaFeRiA')
+gmaps = googlemaps.Client(key='AIzaSyBzYwG-7p7sw7Jpwa-VFec61SPYFof81rc')
 
 @app.route('/notify', methods=["GET", "POST"])
 def notifications():
