@@ -33,7 +33,7 @@ def getClinics(user_address):
     df = df.sort(['dist'],ascending=[1])
     clinics = []
     for i in range(3):
-        message[i] = str(df.at[i, 'ID']) + " " + str(df.at[i, 'ADDRESS'])
+        clinics[i] = str(df.at[i, 'ID']) + " " + str(df.at[i, 'ADDRESS'])
     return clinics
 
 app = Flask(__name__)
