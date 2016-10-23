@@ -2,9 +2,6 @@ from flask import Flask, request, redirect
 from twilio import twiml
 from twilio.rest import TwilioRestClient
 import os
-import pandas as pd
-import math
-import googlemaps
 
 app = Flask(__name__)
 
