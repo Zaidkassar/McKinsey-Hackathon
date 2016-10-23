@@ -80,7 +80,7 @@ def response():
     body = request.values.get('Body', None).lower()
 
     if from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinics":
-        number_values[from_number]['clinics'] = []
+        number_values[from_number]['clinics'] = getClinics(body)
         if number_values[from_number]['clinics'] == []:
             message = 'Address, "' + body + '" not found'
             number_values[from_number]['state'] = "normal"
