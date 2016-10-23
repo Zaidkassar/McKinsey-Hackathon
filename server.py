@@ -31,7 +31,7 @@ def getClinics(user_address):
 
     df['dist'] = df.apply(lambda x:getDistanceLatLon(x['LON'],x['LAT'],latitude, longitude),axis=1)
     df.sort_values(by=['dist'],ascending=1,inplace=True)
-    df.drop(['LAT','LON','dist',axis=1,inplace=True])
+    df.drop(['LAT','LON','dist'],axis=1,inplace=True)
     clinics = []
     for i in range(3):
         clinics.append(str(df.iloc[i, 0]) + " " + str(df.iloc[i, 1]) + " Phone number: " + str(df.iloc[i, 2]))
