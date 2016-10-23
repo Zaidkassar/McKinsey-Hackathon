@@ -23,11 +23,11 @@ def getClinics(user_address):
     latitude = geocode_result[0]['geometry']
     longitude = geocode_result[0]['geometry']
     if 'location' in latitude:
-        latitude = latitude['location']['lng']
-        longitude = longitude['location']['lat']
+        latitude = latitude['location']['lat']
+        longitude = longitude['location']['lng']
     else:
-        latitude = latitude['bounds']['northeast']['lng']
-        longitude = longitude['bounds']['northeast']['lat']
+        latitude = latitude['bounds']['northeast']['lat']
+        longitude = longitude['bounds']['northeast']['lng']
 
     df['dist'] = df.apply(lambda x:getDistanceLatLon(x['LON'],x['LAT'],latitude, longitude),axis=1)
     df.sort_values(by=['dist'],ascending=1,inplace=True)
