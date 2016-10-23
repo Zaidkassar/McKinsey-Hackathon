@@ -96,7 +96,7 @@ def response():
             message = number_values[from_number]['clinics'][number_values[from_number]['index']] + '\n\nMessage "NEXT" for another nearby clinic'
             number_values[from_number]['index'] += 1
             number_values[from_number]['state'] = "clinic result"
-    elif from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinic result" and body == "next":
+    elif from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinic result" and body.strip() == "next":
         message = number_values[from_number]['clinics'][number_values[from_number]['index']]
         number_values[from_number]['index'] += 1
         if number_values[from_number]['index'] < 3:
