@@ -45,10 +45,10 @@ number_values = {}
 ACCOUNT_SID = "ACa21cfc418e446b328b2a6e652e885cac"
 AUTH_TOKEN = "d67465f7552e7b382b5c6a9e30dc6ded"
 gmaps = googlemaps.Client(key='AIzaSyBzYwG-7p7sw7Jpwa-VFec61SPYFof81rc')
+client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
 
 @app.route('/notify', methods=["GET", "POST"])
 def notifications():
-    client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
     for number in numbers:
         from_number = str(number)
         number_recommendations = 0
@@ -68,7 +68,6 @@ def notifications():
 
 @app.route('/thanks', methods=["GET", "POST"])
 def thanks():
-    client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
     for number in numbers:
         from_number = str(number)
         client.messages.create(
@@ -80,7 +79,6 @@ def thanks():
 
 @app.route('/', methods=['GET', 'POST'])
 def response():
-
     resp = twiml.Response()
     insert_number = request.values.get('From', None)
     from_number = str(insert_number)
