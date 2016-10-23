@@ -34,7 +34,7 @@ def getClinics(user_address):
     df.drop(['LAT','LON','dist'],axis=1,inplace=True)
     clinics = []
     for i in range(3):
-        clinics.append(str(df.iloc[i, 0]) + " " + str(df.iloc[i, 1]) + " Phone number: " + str(df.iloc[i, 2]))
+        clinics.append(str(df.iloc[i, 0]) + "\n\nLocation:" + str(df.iloc[i, 1]) + "\n\nPhone number: " + str(df.iloc[i, 2]))
     return clinics
 
 app = Flask(__name__)
