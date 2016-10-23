@@ -20,8 +20,14 @@ def getClinics(user_address):
     if not geocode_result:
         return []
     df = pd.read_csv("clinic_geodata.csv")
-    latitude = geocode_result[0]['geometry']['location']['lat']
-    longitude = geocode_result[0]['geometry']['location']['lng']
+    latitude = geocode_result[0]['geometry']
+    longitude = geocode_result[0]['geometry']
+    if 'location' in latitude:
+        latitude = latitude['location']['lng']
+        longitude = longitude['location']['lat']
+    else:
+        latitude = latitude['bounds']['northeast']['lng']
+        longitude = longitude['bounds']['northeast']['lat']
 
     df['dist'] = df.apply(lambda x:getDistanceLatLon(x['LON'],x['LAT'],latitude, longitude),axis=1)
     df = df.sort(['dist'],ascending=[1])
