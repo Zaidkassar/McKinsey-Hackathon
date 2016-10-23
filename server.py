@@ -17,7 +17,7 @@ def getDistanceLatLon(lat1, lon1, lat2, lon2):
 
 def getClinics(user_address):
     geocode_result = gmaps.geocode(user_address)
-    if geocode_result == []:
+    if geocode_result[0]:
         return []
     df = pd.read_csv("clinic_geodata.csv")
     latitude = geocode_result[0]['geometry']['bounds']['northeast']['lat']
@@ -80,6 +80,7 @@ def response():
     body = request.values.get('Body', None).lower()
 
     if from_number in number_values and 'state' in number_values[from_number] and number_values[from_number]['state'] == "clinics":
+        number_values[from_number]['state'] = "normal"
         number_values[from_number]['clinics'] = getClinics(body)
         if number_values[from_number]['clinics'] == []:
             message = 'Address, "' + body + '" not found'
