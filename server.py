@@ -153,7 +153,7 @@ def response():
             message += '"OFF" to stop updates on vaccines\n\n'
         else:
             message += '"ON" to receive updates on vaccines\n\n'
-            message += '"[insert disease name] ON" or "[insert disease name] OFF" to mark a vaccine as taken'
+        message += '"[insert disease name] ON" or "[insert disease name] OFF" to mark a vaccine as taken'
     else:
         body = body.split()
         command = body[len(body)-1]
