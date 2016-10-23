@@ -103,9 +103,9 @@ def response():
             message += '\n\nMessage "NEXT" for another nearby clinic'
         else:
             number_values[from_number]['state'] = 'normal'
-    elif body == "hello" or body == "hi":
+    elif body.strip() == "hello" or body.strip() == "hi":
         message = 'Hello! Welcome to VacciNow. Message "COMMANDS" to see available commands'
-    elif body == "on":
+    elif body.strip() == "on":
         if insert_number not in numbers:
             numbers.append(insert_number)
             message = 'You have been signed up for updates. Message "OFF" to turn updates off'
@@ -116,7 +116,7 @@ def response():
                 number_values[from_number]['updates'] = "on"
         else:
             message = 'You are already signed up for updates. Message "OFF" to turn updates off'
-    elif body == "off":
+    elif body.strip() == "off":
         if insert_number not in numbers:
             message = 'You are not regsitered for updates. Message "ON" to turn updates on'
         else:
@@ -127,7 +127,7 @@ def response():
             else:
                 number_values[from_number] = {}
                 number_values[from_number]['updates'] = "off"
-    elif body == 'outbreak' or body == 'outbreaks':
+    elif body.strip() == 'outbreak' or body.strip() == 'outbreaks':
         number_reccomendations = 0
         message = "Vaccines Recommended:\n\n"
         for item in vaccines:
@@ -138,7 +138,7 @@ def response():
             message = "You are up to date on all our vaccine reccomendations"
         else:
             message += 'Message "CLINICS" for nearby clinics'
-    elif body == 'clinics' or body == 'clinic':
+    elif body.strip() == 'clinics' or body.strip() == 'clinic':
         message = "Please send us your location"
         if from_number in number_values:
             number_values[from_number]['state'] = "clinics"
@@ -147,7 +147,7 @@ def response():
             number_values[from_number] = {}
             number_values[from_number]['state'] = "clinics"
             number_values[from_number]['index'] = 0
-    elif body == "commands" or body == 'command':
+    elif body.strip() == "commands" or body.strip() == 'command':
         message ='Text Commands:\n\n"OUTBREAK" for recommended vaccines\n\n"CLINICS" for nearby clinics\n\n'
         if from_number in number_values and 'updates' in number_values[from_number] and number_values[from_number]['updates'] == "on":
             message += '"OFF" to stop updates on vaccines\n\n'
