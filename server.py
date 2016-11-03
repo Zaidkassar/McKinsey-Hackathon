@@ -42,9 +42,9 @@ app = Flask(__name__)
 numbers = []
 vaccines = ['Hand, Foot and Mouth Disease']
 number_values = {}
-ACCOUNT_SID = "ACa21cfc418e446b328b2a6e652e885cac"
-AUTH_TOKEN = "d67465f7552e7b382b5c6a9e30dc6ded"
-gmaps = googlemaps.Client(key='AIzaSyBzYwG-7p7sw7Jpwa-VFec61SPYFof81rc')
+ACCOUNT_SID = #Removed
+AUTH_TOKEN = #Removed
+gmaps = googlemaps.Client(key=#Removed)
 client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
 
 @app.route('/notify', methods=["GET", "POST"])
